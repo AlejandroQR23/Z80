@@ -21,6 +21,7 @@ public class DecodeTools
         // imagina que aqui hay algo
     }
 
+
 }
 
 //TODO: Hacer un metodo que cambie los parametros generales (etiqutas, numeros y eso) para obtener el opcode

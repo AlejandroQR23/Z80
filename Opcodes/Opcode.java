@@ -94,14 +94,16 @@ public class Opcode
         this.instructions.put( "CCF",  "00 111 111" );
         this.instructions.put( "SCF",  "00 110 111" );
         this.instructions.put( "HALT", "01 110 110" );
+        this.instructions.put( "DI",   "11 110 011" );
+        this.instructions.put( "EI",   "01 111 110" );
 
         // Grupo de transferencia e intercambio
         this.instructions.put( "EX DE, HL",   "11 101 011" );
         this.instructions.put( "EX AF, AF'",  "00 001 000" );
         this.instructions.put( "EXX",         "11 011 001" );
         this.instructions.put( "EX (SP), HL", "11 100 011" );
-        this.instructions.put( "EX (SP), IX", "11 011 101" );
-        this.instructions.put( "EX (SP), IY", "11 111 101" );
+        this.instructions.put( "EX (SP), IX", "11 011 101 \n11 100 011" );
+        this.instructions.put( "EX (SP), IY", "11 111 101 \n11 100 011" );
         this.instructions.put( "LDI",         "11 101 101" );
 
         // Grupo de carga 8-bit
@@ -111,7 +113,7 @@ public class Opcode
         this.instructions.put( "RLCA", "00 000 111" );
         this.instructions.put( "RLA",  "00 010 111" );
         this.instructions.put( "RRCA", "00 001 111" );
-        this.instructions.put( "RRA",  "00 011 111" );
+        this.instructions.put( "RRA ",  "00 011 111" );
 
         // Grupo de entrada y salida
 
