@@ -20,7 +20,7 @@ public class Opcode
         if ( !opcodesTable.exists() ) {
             createTable();                                                      // llena la tabla de instrucciones
         } else {
-            this.extractTable();
+            extractTable();
         }
     }
 
@@ -106,6 +106,14 @@ public class Opcode
 
         // Grupo de carga 8-bit
         this.instructions.put( "LD", "01 r, r'" );
+
+        // Grupo de rotacion y cambio
+        this.instructions.put( "RLCA", "00 000 111" );
+        this.instructions.put( "RLA",  "00 010 111" );
+        this.instructions.put( "RRCA", "00 001 111" );
+        this.instructions.put( "RRA",  "00 011 111" );
+
+        // Grupo de entrada y salida
 
     }
 

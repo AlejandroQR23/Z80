@@ -1,2 +1,3 @@
 NOP
-DJNZ
+DAA
+HALT
