@@ -31,6 +31,7 @@ public class DecodeTools
      */
     public String getInst( String inst ){
         // imagina que aqui hay algo
+        return "wenas";
     }
 
     private void fillTables(){

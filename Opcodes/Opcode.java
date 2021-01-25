@@ -2,6 +2,7 @@ package Opcodes;
 
 import java.util.*;                                                             // colecciones
 import java.io.*;                                                               // archivos
+import Opcodes.DecodeTools;
 
 /**
  * Una clase con los metodos convenientes trabajar
@@ -52,7 +53,7 @@ public class Opcode
     @SuppressWarnings("unchecked") // perdoname diosito
     private void extractTable(){
         try{
-            ObjectInputStream table = new ObjectInputStream(new FileInputStream( "Opcodes/Opcodes.dat" ));
+            ObjectInputStream table = new ObjectInputStream(new FileInputStream( "Opcodes/Objects/Opcodes.dat" ));
             this.instructions = (Hashtable<String, String>) table.readObject();
             table.close();
         } catch( IOException e ){
