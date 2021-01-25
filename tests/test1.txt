@@ -1,3 +1,4 @@
+LD A, A'
 NOP
 DAA
 HALT

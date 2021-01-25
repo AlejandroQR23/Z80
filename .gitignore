@@ -3,3 +3,6 @@
 
 #ignora el archivo de prueba
 pruebas.java
+
+#ignora la tabla de instrucciones
+opcode.dat

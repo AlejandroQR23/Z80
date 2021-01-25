@@ -26,31 +26,46 @@ public class DecodeTools
     }
 
     /**
-     * Metodo estatico que cambia los registros de la instruccion
+     * Metodo que cambia los registros de la instruccion
      * por una r o r', asi podran la instruccion estara en su forma general
      */
-    public static String getRegister( String instruction ){
+    public String getRegister( String instruction ){
         String result = instruction.replaceAll("( A)|( B)|( C)|( D)|( E)|( H)|( L)", " r");
         result = result.replaceAll("( A')|( B')|( C')|( D')|( E')|( H')|( L')", " r'");
 
         if ( instruction.contains( " A" ) ) {
-            register = "A";
+            this.register = "A";
         } else if ( instruction.contains( " B" ) ) {
-            register = "B";
+            this.register = "B";
+        } else if ( instruction.contains( " C" ) ) {
+            this.register = "C";
+        } else if ( instruction.contains( " D" ) ) {
+            this.register = "D";
+        } else if ( instruction.contains( " E" ) ) {
+            this.register = "E";
+        } else if ( instruction.contains( " H" ) ) {
+            this.register = "H";
+        } else if ( instruction.contains( " L" ) ) {
+            this.register = "L";
         }
 
         return result;
     }
 
     /**
-     * Metodo estatico que cambia los reigstros
+     * Metodo que cambia los reigstros
      * del opcode general por los opcodes correspondientes
      * al registro de la instruccion dada
      * @param opcode El opcode con el registro cambiado por su opcode
      */
-    public static String changeRegister( String opcode ){
-        String opc = opcode.replace("r,", registers.get(register) );
-        return opc.replace("r'", registers.get(register) );
+    public String changeRegister( String opcode ){
+        if ( this.register != null ) {
+            String opc = opcode.replace("r,", registers.get(register) );
+            return opc.replace("r'", registers.get(register) );
+        } else{
+            return opcode;
+        }
+
     }
 
     private void fillTables(){

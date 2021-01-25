@@ -38,8 +38,14 @@ public class Opcode
 
         LinkedList< String > opcodes = new LinkedList<>();
         for ( String inst : list ) {
-            String opcode = this.instructions.get( inst );
+
+            // Se obtienen los registros
+            String gInst = decoder.getRegister( inst );
+            String gOpc = this.instructions.get( gInst );
+            String opcode = decoder.changeRegister( gOpc );
+
             opcodes.add( opcode );
+
         }
 
         return opcodes;
@@ -113,7 +119,7 @@ public class Opcode
         this.instructions.put( "LDI",         "11 101 101 \n10 100 000" );
 
         // Grupo de carga 8-bit
-        this.instructions.put( "LD", "01 r, r'" );
+        this.instructions.put( "LD r, r'", "01 r, r'" );
 
         // Grupo de rotacion y cambio
         this.instructions.put( "RLCA",     "00 000 111" );
