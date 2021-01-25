@@ -1,0 +1,5 @@
+# ignora todas las clases
+*.class
+
+#ignora el archivo de prueba
+pruebas.java

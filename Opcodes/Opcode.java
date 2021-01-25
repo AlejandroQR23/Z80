@@ -99,6 +99,9 @@ public class Opcode
         this.instructions.put( "HALT", "01 110 110" );
         this.instructions.put( "DI",   "11 110 011" );
         this.instructions.put( "EI",   "01 111 110" );
+        this.instructions.put( "IM 0", "11 101 101 \n01 000 110" );
+        this.instructions.put( "IM 1", "11 101 101 \n01 010 110" );
+        this.instructions.put( "IM 2", "11 101 101 \n01 011 110" );
 
         // Grupo de transferencia e intercambio
         this.instructions.put( "EX DE, HL",   "11 101 011" );
@@ -143,11 +146,11 @@ public class Opcode
         // Grupo de salto
         // this.instructions.put( "JP nn",     "11 000 011" );
 		//this.instructions.put( "JP cc, nn", "11 cc 010" );
-        // this.instructions.put( "JR e",      "00 011 000" );
-        // this.instructions.put( "JR C, e",   "00 111 000" );
-        // this.instructions.put( "JR NC, e",  "00 110 000" );
-		// this.instructions.put( "JR Z, e",   "00 101 000" );
-        // this.instructions.put( "JR NZ, e",  "00 100 000" );
+        this.instructions.put( "JR e",      "00 011 000" );
+        this.instructions.put( "JR C, e",   "00 111 000" );
+        this.instructions.put( "JR NC, e",  "00 110 000" );
+		this.instructions.put( "JR Z, e",   "00 101 000" );
+        this.instructions.put( "JR NZ, e",  "00 100 000" );
         this.instructions.put( "JP (HL)",   "11 101 001" );
         this.instructions.put( "JP (IX)",   "11 011 101 \n11 101 001" );
 		this.instructions.put( "JP (IY)",   "11 111 101 \n11 101 001" );

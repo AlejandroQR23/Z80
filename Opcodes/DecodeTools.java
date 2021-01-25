@@ -19,19 +19,38 @@ public class DecodeTools
     private Hashtable< String, String> bits;                                    // tabla con los opcodes de los bits
     private Hashtable< String, String> conditions;                              // tabla con los opcodes de las condiciones
 
+    private String register;                                                    // registro de la instruccion, si lo tiene
+
     public DecodeTools(){
         fillTables();
     }
 
     /**
-     * Un metodo estatico que obtiene el opcode
-     * correcto de acuerdo a la instruccion recibida
-     * @param inst la instruccion a leer
-     * @return una cadena con el opcode correspondiente
+     * Metodo estatico que cambia los registros de la instruccion
+     * por una r o r', asi podran la instruccion estara en su forma general
      */
-    public String getInst( String inst ){
-        // imagina que aqui hay algo
-        return "wenas";
+    public static String getRegister( String instruction ){
+        String result = instruction.replaceAll("( A)|( B)|( C)|( D)|( E)|( H)|( L)", " r");
+        result = result.replaceAll("( A')|( B')|( C')|( D')|( E')|( H')|( L')", " r'");
+
+        if ( instruction.contains( " A" ) ) {
+            register = "A";
+        } else if ( instruction.contains( " B" ) ) {
+            register = "B";
+        }
+
+        return result;
+    }
+
+    /**
+     * Metodo estatico que cambia los reigstros
+     * del opcode general por los opcodes correspondientes
+     * al registro de la instruccion dada
+     * @param opcode El opcode con el registro cambiado por su opcode
+     */
+    public static String changeRegister( String opcode ){
+        String opc = opcode.replace("r,", registers.get(register) );
+        return opc.replace("r'", registers.get(register) );
     }
 
     private void fillTables(){
@@ -77,10 +96,9 @@ public class DecodeTools
         this.conditions.put("P",  "110");
         this.conditions.put("M",  "111");
 
-
     }
-
 
 }
 
+//TODO: Mover todas la tablas a un solo lado - estoy pensando en opcodes
 //TODO: Hacer un metodo que cambie los parametros generales (etiqutas, numeros y eso) para obtener el opcode
