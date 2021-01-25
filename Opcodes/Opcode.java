@@ -7,16 +7,18 @@ import java.io.*;                                                               
  * Una clase con los metodos convenientes trabajar
  * con los opcodes y su equivalente en mnemonicos
  *
- * @version 0.15 15/01/2021
+ * @version 0.16 15/01/2021
  * @author Alejandro Quijano
  */
 public class Opcode
 {
 
     private Hashtable< String, String > instructions;                           // tabla de mnemonicos
+    private DecodeTools decoder;                                                // herramienta de decodificacion
 
     public Opcode(){
-        File opcodesTable = new File( "Opcodes/Opcodes.dat" );
+        this.decoder = new DecodeTools();                                       // se crea la herramienta de decodificacion
+        File opcodesTable = new File( "Opcodes/Objects/Opcodes.dat" );
         if ( !opcodesTable.exists() ) {
             createTable();                                                      // llena la tabla de instrucciones
         } else {
@@ -68,7 +70,7 @@ public class Opcode
 
         this.fillTable();                                                       // Se crea la tabla solo una vez
         try{
-            ObjectOutputStream opcodeFile = new ObjectOutputStream(new FileOutputStream( "Opcodes/Opcodes.dat" ));
+            ObjectOutputStream opcodeFile = new ObjectOutputStream(new FileOutputStream( "Opcodes/Objects/Opcodes.dat" ));
             opcodeFile.writeObject( this.instructions );
             opcodeFile.close();
         } catch( IOException e ){
@@ -104,18 +106,60 @@ public class Opcode
         this.instructions.put( "EX (SP), HL", "11 100 011" );
         this.instructions.put( "EX (SP), IX", "11 011 101 \n11 100 011" );
         this.instructions.put( "EX (SP), IY", "11 111 101 \n11 100 011" );
-        this.instructions.put( "LDI",         "11 101 101" );
+        this.instructions.put( "LDI",         "11 101 101 \n10 100 000" );
 
         // Grupo de carga 8-bit
         this.instructions.put( "LD", "01 r, r'" );
 
         // Grupo de rotacion y cambio
-        this.instructions.put( "RLCA", "00 000 111" );
-        this.instructions.put( "RLA",  "00 010 111" );
-        this.instructions.put( "RRCA", "00 001 111" );
-        this.instructions.put( "RRA ",  "00 011 111" );
+        this.instructions.put( "RLCA",     "00 000 111" );
+        this.instructions.put( "RLA",      "00 010 111" );
+        this.instructions.put( "RRCA",     "00 001 111" );
+        this.instructions.put( "RRA ",     "00 011 111" );
+        this.instructions.put( "RLC (HL)", "11 001 011 \n00 000 110" );
+        //this.instructions.put( "RLC (IX+d)","11 011 101 \n11 001 011 \n d \n00 000 110" );
+        //this.instructions.put( "RLC (IY+d)","11 111 101 \n11 001 011 \n d \n00 000 110" );
+		// this.instructions.put( "RL s",   "00 010 110" );
+        // this.instructions.put( "RRC s",  "00 001 110" );
+        // this.instructions.put( "RR s",   "00 011 110" );
+        // this.instructions.put( "SLA s"   "00 100 110" );
+		// this.instructions.put( "SRA s",  "00 101 110" );
+        // this.instructions.put( "SRL s",  "00 111 110" );
+        this.instructions.put( "RLD",       "11 101 101 \n01 101 111" );
+        this.instructions.put( "RRD",       "11 101 101 \n01 100 111" );
 
-        // Grupo de entrada y salida
+        // Grupo de bit y reinicio
+        //this.instructions.put( "BIT b, r",     "11 001 011 \n01 b r" );
+        //this.instructions.put( "BIT b, (HL)",  "11 001 011 \n01 b 110" );
+        //this.instructions.put( "BIT b, (IX+d)","11 011 101 \n11 001 011 \n d \n01 b 110" );
+        //this.instructions.put( "BIT b, (IY+d)","11 111 101 \n11 001 011 \n d \n01 b 110" );
+		//this.instructions.put( "SET b, r",     "11 001 011 \n11 b r" );
+        //this.instructions.put( "SET b, (HL)",  "11 001 011 \n11 b 110" );
+		//this.instructions.put( "SET b, (IX+d)","11 011 101 \n11 001 011 \n d \n11 b 110" );
+        //this.instructions.put( "SET b, (IY+d)","11 111 101 \n11 001 011 \n d \n11 b 110" );
+        //this.instructions.put( "RES b, s",     "10" );
+
+        // Grupo de salto
+        // this.instructions.put( "JP nn",     "11 000 011" );
+		//this.instructions.put( "JP cc, nn", "11 cc 010" );
+        // this.instructions.put( "JR e",      "00 011 000" );
+        // this.instructions.put( "JR C, e",   "00 111 000" );
+        // this.instructions.put( "JR NC, e",  "00 110 000" );
+		// this.instructions.put( "JR Z, e",   "00 101 000" );
+        // this.instructions.put( "JR NZ, e",  "00 100 000" );
+        this.instructions.put( "JP (HL)",   "11 101 001" );
+        this.instructions.put( "JP (IX)",   "11 011 101 \n11 101 001" );
+		this.instructions.put( "JP (IY)",   "11 111 101 \n11 101 001" );
+        // this.instructions.put( "DJNZ, e",   "00 010 000" );
+
+        // Grupo de llamada y retorno
+        // this.instructions.put( "CALL nn",    "11 001 101" );
+        // this.instructions.put( "CALL cc, nn","11 cc 100" );
+        this.instructions.put( "RET",        "11 001 001" );
+        //this.instructions.put( "RET cc",     "11 cc 000" );
+		this.instructions.put( "RETI",       "11 101 101 \n01 001 101" );
+        this.instructions.put( "RETN",       "11 101 101 \n01 000 101" );
+        //this.instructions.put( "RST p",      "11 t 111" );
 
     }
 
