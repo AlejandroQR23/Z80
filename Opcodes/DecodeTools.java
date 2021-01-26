@@ -60,15 +60,15 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private String getPairR( String instruction ){
-        String result = instruction.replaceAll("( BC)|( DE)|( HL)|( SP)|( AF)|( IX)|( IY)", " dd");
+        String result = instruction.replaceAll("(BC)|(DE)|(HL)|(SP)|(AF)|(IX)|(IY)", " dd");
 
-        if ( instruction.contains( " BC" ) ) {
+        if ( instruction.contains( "BC" ) ) {
             this.pairR = "BC";
-        } else if ( instruction.contains( " DE" ) ) {
+        } else if ( instruction.contains( "DE" ) ) {
             this.pairR = "DE";
-        } else if ( instruction.contains( " HL" ) ) {
+        } else if ( instruction.contains( "HL" ) ) {
             this.pairR = "HL";
-        } else if ( instruction.contains( " AF" ) ) {
+        } else if ( instruction.contains( "AF" ) ) {
             this.pairR = "AF";
         }
 
@@ -96,7 +96,7 @@ public class DecodeTools
 
     public String getInst( String inst ){
 
-        StringBuilder gInst = inst;                                             // cadena mutable con la instruccion
+        StringBuilder gInst = new StringBuilder( inst );                        // cadena mutable con la instruccion
 
         if ( this.register != null ) {
             gInst = getRegister( inst );                                        // Se verifican los registros individuales
