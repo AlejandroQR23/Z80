@@ -40,7 +40,7 @@ public class Opcode
         for ( String inst : list ) {
 
             // Se obtienen los registros
-            String gInst = decoder.getRegister( inst );
+            String gInst = decoder.getInst( inst );
             String gOpc = this.instructions.get( gInst );
             String opcode = decoder.changeRegister( gOpc );
 

@@ -20,6 +20,7 @@ public class DecodeTools
     private Hashtable< String, String> conditions;                              // tabla con los opcodes de las condiciones
 
     private String register;                                                    // registro de la instruccion, si lo tiene
+    private String pairR;
 
     public DecodeTools(){
         fillTables();
@@ -27,9 +28,10 @@ public class DecodeTools
 
     /**
      * Metodo que cambia los registros de la instruccion
-     * por una r o r', asi podran la instruccion estara en su forma general
+     * por una r o r', asi la instruccion estara en su forma general
+     * @param instruction La instruccion a generalizar
      */
-    public String getRegister( String instruction ){
+    private String getRegister( String instruction ){
         String result = instruction.replaceAll("( A)|( B)|( C)|( D)|( E)|( H)|( L)", " r");
         result = result.replaceAll("( A')|( B')|( C')|( D')|( E')|( H')|( L')", " r'");
 
@@ -53,19 +55,62 @@ public class DecodeTools
     }
 
     /**
+     * Metodo que cambia los registros pares de la instruccion
+     * por una dd, asi la instruccion estara en su forma general
+     * @param instruction La instruccion a generalizar
+     */
+    private String getPairR( String instruction ){
+        String result = instruction.replaceAll("( BC)|( DE)|( HL)|( SP)|( AF)|( IX)|( IY)", " dd");
+
+        if ( instruction.contains( " BC" ) ) {
+            this.pairR = "BC";
+        } else if ( instruction.contains( " DE" ) ) {
+            this.pairR = "DE";
+        } else if ( instruction.contains( " HL" ) ) {
+            this.pairR = "HL";
+        } else if ( instruction.contains( " AF" ) ) {
+            this.pairR = "AF";
+        }
+
+        return result;
+    }
+
+    /**
      * Metodo que cambia los reigstros
      * del opcode general por los opcodes correspondientes
      * al registro de la instruccion dada
      * @param opcode El opcode con el registro cambiado por su opcode
+     * @return El opcode con el registro cambiado, si lo hay
      */
     public String changeRegister( String opcode ){
         if ( this.register != null ) {
             String opc = opcode.replace("r,", registers.get(register) );
             return opc.replace("r'", registers.get(register) );
-        } else{
+        } else if ( this.pairR != null ){
+            return opcode.replace("dd,", pairsR.get(pairR) );
+        } else {
             return opcode;
         }
 
+    }
+
+    public String getInst( String inst ){
+
+        StringBuilder gInst = inst;                                             // cadena mutable con la instruccion
+
+        if ( this.register != null ) {
+            gInst = getRegister( inst );                                        // Se verifican los registros individuales
+        } else if ( this.pairR != null ) {
+            gInst = getPairR( gInst.toString() );                               // Se verifican los registros pares
+        }
+
+
+        return gInst.toString();
+
+    }
+
+    public String getOpc( String inst ){
+        return null;
     }
 
     private void fillTables(){
@@ -117,3 +162,4 @@ public class DecodeTools
 
 //TODO: Mover todas la tablas a un solo lado - estoy pensando en opcodes
 //TODO: Hacer un metodo que cambie los parametros generales (etiqutas, numeros y eso) para obtener el opcode
+//TODO: Los metodos para generalizar reigstros se pueden optimizar para que no hagan nada si no hay registros en la instruccion
