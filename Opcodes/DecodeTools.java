@@ -21,6 +21,7 @@ public class DecodeTools
 
     private String register;                                                    // registro de la instruccion, si lo tiene
     private String pairR;
+    private String condition;                                                   // condiciones de la instruccion, si las tiene
 
     public DecodeTools(){
         fillTables();
@@ -60,7 +61,7 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private String getPairR( String instruction ){
-        String result = instruction.replaceAll("(BC)|(DE)|(HL)|(SP)|(AF)|(IX)|(IY)", " dd");
+        String result = instruction.replaceAll("(BC)|(DE)|(HL)|(SP)|(AF)|(IX)|(IY)", "dd");
 
         if ( instruction.contains( "BC" ) ) {
             this.pairR = "BC";
@@ -70,6 +71,26 @@ public class DecodeTools
             this.pairR = "HL";
         } else if ( instruction.contains( "AF" ) ) {
             this.pairR = "AF";
+        }
+
+        return result;
+    }
+
+    /**
+     * Metodo que cambia las condiciones de la instruccion
+     * por una cc, asi la instruccion estara en su forma general
+     */
+    private String getCondition( String instruction ){
+        String result = instruction.replaceAll("( NZ)|( Z)|( NC)|( C)", " cc");
+
+        if ( instruction.contains("NZ") ) {
+            this.condition = "NZ";
+        } else if ( instruction.contains("Z") ) {
+            this.condition = "Z";
+        } else if ( instruction.contains("NC") ) {
+            this.condition = "NC";
+        } else if ( instruction.contains("C") ) {
+            this.condition = "C";
         }
 
         return result;
@@ -88,6 +109,23 @@ public class DecodeTools
             return opc.replace("r'", registers.get(register) );
         } else if ( this.pairR != null ){
             return opcode.replace("dd,", pairsR.get(pairR) );
+        } else {
+            return opcode;
+        }
+
+    }
+
+    /**
+     * Metodo que cambia las condiciones
+     * del opcode general por los opcodes correspondientes
+     * a la condicion de la instruccion dada
+     * @param opcode El opcode con el registro cambiado por su opcode
+     * @return El opcode con la condicion cambiada, si la hay
+     */
+    public String changeCondition( String opcode ){
+        if ( this.condition != null ) {
+            String opc = opcode.replace("cc", conditions.get( condition ));
+            return opc;
         } else {
             return opcode;
         }

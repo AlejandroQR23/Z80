@@ -135,7 +135,7 @@ public class Opcode
         this.instructions.put( "PUSH dd",   "11 dd0 101" );
         this.instructions.put( "PUSH IX",   "11 011 101 \n11 100 101" );
         this.instructions.put( "PUSH IY",   "11 011 101 \n11 111 001" );
-        this.instructions.put( "PUSH dd",   "11 dd0 001" );
+        this.instructions.put( "POP dd",    "11 dd0 001" );
         this.instructions.put( "POP IX",    "11 011 101 \n11 100 001" );
         this.instructions.put( "POP IY",    "11 111 101 \n11 100 001" );
 
