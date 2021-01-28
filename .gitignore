@@ -6,3 +6,6 @@ pruebas.java
 
 #ignora todas las tablas
 *.dat
+
+#ignora todos los archivos de texto
+*.txt

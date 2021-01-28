@@ -227,9 +227,9 @@ public class Opcode
         //this.instructions.put( "RES b, s",     "10" );
 
         // Grupo de salto
-        // this.instructions.put( "JP nn",     "11 000 011" );
-		// this.instructions.put( "JP cc, nn", "11 cc 010" );
-        // this.instructions.put( "JR e",      "00 011 000" );
+        //this.instructions.put( "JP nn",     "11 000 011" );
+		//this.instructions.put( "JP cc, nn", "11 cc 010" );
+        //this.instructions.put( "JR e",      "00 011 000" );
         //this.instructions.put( "JR C, e",   "00 111 000" );
         //this.instructions.put( "JR NC, e",  "00 110 000" );
 		//this.instructions.put( "JR Z, e",   "00 101 000" );
