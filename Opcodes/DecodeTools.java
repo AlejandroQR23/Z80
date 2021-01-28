@@ -142,7 +142,6 @@ public class DecodeTools
             gInst = getPairR( gInst.toString() );                               // Se verifican los registros pares
         }
 
-
         return gInst.toString();
 
     }
@@ -201,3 +200,4 @@ public class DecodeTools
 //TODO: Mover todas la tablas a un solo lado - estoy pensando en opcodes
 //TODO: Hacer un metodo que cambie los parametros generales (etiqutas, numeros y eso) para obtener el opcode
 //TODO: Los metodos para generalizar reigstros se pueden optimizar para que no hagan nada si no hay registros en la instruccion
+//TODO: Cambiar los valores de retorno para que regreese un StringBuilder

@@ -1,4 +1,4 @@
-LD A, A'
+LD B, B'
 NOP
 DAA
 HALT

@@ -5,8 +5,10 @@ public class pruebas
 
     static Hashtable< String, String > instructions = new Hashtable<>();
     static Hashtable< String, String> registers = new Hashtable<>();
-    static String instruction = "LD A, A'";
+    static Hashtable< String, String> conditions = new Hashtable<>();
+    static String instruction = "CALL NZ, 000";
     static String register;
+    static String condition;
 
     public static String getRegister(){
         // se cambia los registros por registro por "r"
@@ -22,25 +24,46 @@ public class pruebas
         return result;
     }
 
+    public static String getCondition(){
+        String result = instruction.replaceAll("( NZ)|( Z)|( NC)|( C)", " cc");
+
+        if ( instruction.contains("NZ") ) {
+            condition = "NZ";
+        }
+
+        return result;
+    }
+
     public static String changeRegister( String opcode ){
         String opc = opcode.replace("r,", registers.get(register) );
         return opc.replace("r'", registers.get(register) );
     }
 
+    public static String changeCondition( String opcode ){
+        String opc = opcode.replace("cc", conditions.get( condition ));
+        return opc;
+    }
+
+
+
     public static void main(String[] args) {
 
         pruebas p = new pruebas();
-        instructions.put( "LD r, r'", "01 r, r'" );
-        registers.put("A", "111");
+        instructions.put( "CALL cc, 000", "01 cc 100" );
+        conditions.put("NZ", "000");
 
-        String generalInst = getRegister();
-        System.out.println( "\n Intruccion: " + generalInst );
+        String gInst = getCondition();
+        System.out.println( "\n Intruccion: " + gInst );
 
-        String opcode = instructions.get( generalInst );
+        String opcode = instructions.get( gInst );
         System.out.println( "\n Opcode general: " + opcode );
 
-        String opcodeF = changeRegister( opcode );
+        String opcodeF = changeCondition( opcode );
         System.out.println( "\n Opcode final: " + opcodeF );
+
+        StringBuilder sb = new StringBuilder("aaaa");
+        sb = new StringBuilder("a");
+        System.out.println( sb );
 
     }
 
