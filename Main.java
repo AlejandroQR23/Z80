@@ -13,8 +13,6 @@ public class Main
         FileOptions f = new FileOptions( "test1" );
         LinkedList<String> list = f.readFile();                                 // se leen las instrucciones del archivo de texto
 
-        System.out.print( "\n Intruccion: " + list.peek() );
-
         f.createFile();                                                         // crea el archivo donde iran los opcodes
 
         Opcode opc = new Opcode();
