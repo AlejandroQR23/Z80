@@ -1,4 +1,5 @@
 LD B, B'
+BIT 1, A
 NOP
 DAA
 HALT

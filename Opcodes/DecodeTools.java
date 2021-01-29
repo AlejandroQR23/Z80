@@ -22,6 +22,7 @@ public class DecodeTools
     private String register;                                                    // registro de la instruccion, si lo tiene
     private String pairR;
     private String condition;                                                   // condiciones de la instruccion, si las tiene
+    private String bit;
 
     public DecodeTools(){
         fillTables();
@@ -32,7 +33,7 @@ public class DecodeTools
      * por una r o r', asi la instruccion estara en su forma general
      * @param instruction La instruccion a generalizar
      */
-    private String getRegister( String instruction ){
+    private StringBuilder getRegister( String instruction ){
         String result = instruction.replaceAll("( A)|( B)|( C)|( D)|( E)|( H)|( L)", " r");
         result = result.replaceAll("( A')|( B')|( C')|( D')|( E')|( H')|( L')", " r'");
 
@@ -52,7 +53,9 @@ public class DecodeTools
             this.register = "L";
         }
 
-        return result;
+        System.out.print( "\n Registro: " + this.register );
+
+        return new StringBuilder(result);
     }
 
     /**
@@ -60,7 +63,7 @@ public class DecodeTools
      * por una dd, asi la instruccion estara en su forma general
      * @param instruction La instruccion a generalizar
      */
-    private String getPairR( String instruction ){
+    private StringBuilder getPairR( String instruction ){
         String result = instruction.replaceAll("(BC)|(DE)|(HL)|(SP)|(AF)|(IX)|(IY)", "dd");
 
         if ( instruction.contains( "BC" ) ) {
@@ -73,14 +76,14 @@ public class DecodeTools
             this.pairR = "AF";
         }
 
-        return result;
+        return new StringBuilder(result);
     }
 
     /**
      * Metodo que cambia las condiciones de la instruccion
      * por una cc, asi la instruccion estara en su forma general
      */
-    private String getCondition( String instruction ){
+    private StringBuilder getCondition( String instruction ){
         String result = instruction.replaceAll("( NZ)|( Z)|( NC)|( C)", " cc");
 
         if ( instruction.contains("NZ") ) {
@@ -93,7 +96,31 @@ public class DecodeTools
             this.condition = "C";
         }
 
-        return result;
+        return new StringBuilder(result);
+    }
+
+    private StringBuilder getBit( String instruction ){
+        String result = instruction.replaceAll("[0-7]", "b");
+
+        if ( instruction.contains("0") ) {
+            this.bit = "0";
+        } else if( instruction.contains("1") ){
+            this.bit = "1";
+        } else if ( instruction.contains("2") ) {
+            this.bit = "2";
+        } else if ( instruction.contains("3") ) {
+            this.bit = "3";
+        } else if ( instruction.contains("4") ) {
+            this.bit = "4";
+        } else if ( instruction.contains("5") ) {
+            this.bit = "5";
+        } else if ( instruction.contains("6") ) {
+            this.bit = "6";
+        } else if ( instruction.contains("7") ) {
+            this.bit = "7";
+        }
+
+        return new StringBuilder(result);
     }
 
     /**
@@ -105,10 +132,11 @@ public class DecodeTools
      */
     public String changeRegister( String opcode ){
         if ( this.register != null ) {
-            String opc = opcode.replace("r,", registers.get(register) );
-            return opc.replace("r'", registers.get(register) );
+            String opc = opcode.replaceAll("(r,)|(r)", registers.get(register) );
+            String opc2 = opc.replaceAll("(')", "");
+            return opc2;
         } else if ( this.pairR != null ){
-            return opcode.replace("dd,", pairsR.get(pairR) );
+            return opcode.replaceAll("dd,", pairsR.get(pairR) );
         } else {
             return opcode;
         }
@@ -132,15 +160,22 @@ public class DecodeTools
 
     }
 
+    public String changeBit( String opcode ){
+        if ( this.bit != null ) {
+            String opc = opcode.replace("b", bits.get( bit ));
+            return opc;
+        } else {
+            return opcode;
+        }
+    }
+
     public String getInst( String inst ){
 
         StringBuilder gInst = new StringBuilder( inst );                        // cadena mutable con la instruccion
 
-        if ( this.register != null ) {
-            gInst = getRegister( inst );                                        // Se verifican los registros individuales
-        } else if ( this.pairR != null ) {
-            gInst = getPairR( gInst.toString() );                               // Se verifican los registros pares
-        }
+        gInst = getBit( gInst.toString() );
+        gInst = getRegister( gInst.toString() );                                // Se verifican los registros individuales
+        gInst = getPairR( gInst.toString() );
 
         return gInst.toString();
 
