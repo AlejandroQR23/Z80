@@ -19,8 +19,8 @@ public class FileOptions
     String fileOpc;                                                             // nombre del archivo de opcodes
 
     public FileOptions( String fileName ){
-        this.fileInst = this.address + fileName + ".txt";
-        this.fileOpc = this.address + "opcode_" + fileName + ".txt";
+        this.fileInst = this.address + fileName + ".asm";
+        this.fileOpc = this.address + "opcode_" + fileName + ".lst";
     }
 
     /**
