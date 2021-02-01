@@ -39,18 +39,15 @@ public class Opcode
 
             DecodeTools decoder = new DecodeTools();                            // herramienta de decodificacion
 
-            // Se obtienen los registros
             System.out.print( "\n Intruccion: " + inst );
-            String gInst = decoder.getInst( inst );
+            String gInst = decoder.getInst( inst );                             // se obtiene la instruccion general
             System.out.print( "\n Intruccion G: " + gInst );
-            String gOpc = this.instructions.get( gInst );
+            String gOpc = this.instructions.get( gInst );                       // se extrae el opcode general
             System.out.println( "\n Opcode G " + gOpc );
-            String opcode = decoder.changeBit( gOpc );
-            String opcode2 = decoder.changeRegister( opcode );
-            String opcode3 = decoder.changeCondition( opcode2 );
-            System.out.println( "\n Opcode " + opcode3 );
+            String opcode = decoder.getOpc( gOpc );                             // se obtiene el opcode final en binario
+            System.out.println( "\n Opcode " + opcode );
 
-            opcodes.add( opcode3 );
+            opcodes.add( opcode );
 
         }
 
@@ -282,7 +279,7 @@ public class Opcode
 
         // Grupo de llamada y retorno
         this.instructions.put( "CALL nn",    "11 001 101" );
-        this.instructions.put( "CALL cc, nn" "11 cc 100" );
+        this.instructions.put( "CALL cc, nn", "11 cc 100" );
         this.instructions.put( "RET",        "11 001 001" );
         this.instructions.put( "RET cc",     "11 cc 000" );
 		this.instructions.put( "RETI",       "11 101 101 \n01 001 101" );
@@ -290,8 +287,5 @@ public class Opcode
         //this.instructions.put( "RST p",      "11 t 111" );
 
     }
-
-    //TODO: ingresar todos los opcodes
-    //TODO: Luego de las instrucciones EX SP todas llevan dos opcodes
 
 }

@@ -8,7 +8,7 @@ import java.io.*;
  * funcionan como herramientas para decodificar
  * las instrucciones del Z80
  *
- * @version 0.11 16/01/2021
+ * @version 0.8 25/01/2021
  * @author Alejandro Quijano
  */
 public class DecodeTools
@@ -104,6 +104,7 @@ public class DecodeTools
     /**
      * Metodo que cambia las condiciones de la instruccion
      * por una cc, asi la instruccion estara en su forma general
+     * @param instruction La instruccion a generalizar
      */
     private StringBuilder getCondition( String instruction ){
         String result = instruction.replaceAll("( NZ)(, nn)", " cc, nn");
@@ -121,6 +122,11 @@ public class DecodeTools
         return new StringBuilder(result);
     }
 
+    /**
+     * Metodo que cambia los bits de la instruccion
+     * por una b, asi la instruccion estara en su forma general
+     * @param instruction La instruccion a generalizar
+     */
     private StringBuilder getBit( String instruction ){
 
         if ( instruction.contains("IM ") ) {
@@ -151,13 +157,20 @@ public class DecodeTools
     }
 
     /*
-     *
+     * Metodo que cambia las etiquetas
+     * por una e, asi la instruccion estara en su forma general
+     * @param instruction La instruccion a generalizar
      */
     private StringBuilder getEti( String instruction ){
         String result = instruction.replaceAll("(eti)([1-9]*[0-9])*", "e");
         return new StringBuilder(result);
     }
 
+    /*
+     * Metodo que cambia los numeros
+     * por una n o nn asi la instruccion estara en su forma general
+     * @param instruction La instruccion a generalizar
+     */
     private StringBuilder getNumber( String instruction ){
         String result = instruction.replaceAll("(2[05][0-5]|2[0-4][0-9]|1?[0-9][0-9])", "n");
         String result2 = instruction.replaceAll("([0-6]?[0-9]{0,2}[0-9][0-9])", "nn");
@@ -171,19 +184,19 @@ public class DecodeTools
      * @param opcode El opcode con el registro cambiado por su opcode
      * @return El opcode con el registro cambiado, si lo hay
      */
-    public String changeRegister( String opcode ){
+    private StringBuilder changeRegister( String opcode ){
         if ( this.register != null ) {
             String opc = opcode.replaceFirst("(r,)|(r)", registers.get(register) );
             if ( this.altR != null ) {
                 String opc2 = opc.replaceAll("(r')", registers.get(altR) );
-                return opc2;
+                return new StringBuilder( opc2 );
             } else {
-                return opc;
+                return new StringBuilder( opc );
             }
         } else if ( this.pairR != null ){
-            return opcode.replaceAll("dd,", pairsR.get(pairR) );
+            return new StringBuilder( opcode.replaceAll("dd", pairsR.get(pairR) ) );
         } else {
-            return opcode;
+            return new StringBuilder( opcode );
         }
 
     }
@@ -195,25 +208,38 @@ public class DecodeTools
      * @param opcode El opcode con el registro cambiado por su opcode
      * @return El opcode con la condicion cambiada, si la hay
      */
-    public String changeCondition( String opcode ){
+    private StringBuilder changeCondition( String opcode ){
         if ( this.condition != null ) {
             String opc = opcode.replace("cc", conditions.get( condition ));
-            return opc;
+            return new StringBuilder( opc );
         } else {
-            return opcode;
+            return new StringBuilder( opcode );
         }
 
     }
 
-    public String changeBit( String opcode ){
+    /**
+     * Metodo que cambia los bits
+     * del opcode general por los opcodes correspondientes
+     * al bit de la instruccion dada
+     * @param opcode El opcode con el registro cambiado por su opcode
+     * @return El opcode con el bit cambiado, si lo hay
+     */
+    private StringBuilder changeBit( String opcode ){
         if ( this.bit != null ) {
             String opc = opcode.replace("b", bits.get( bit ));
-            return opc;
+            return new StringBuilder( opc );
         } else {
-            return opcode;
+            return new StringBuilder( opcode );
         }
     }
 
+    /**
+    * Metodo que convierte una isntruccion dada
+    * en su forma general para poder buscarla en tablas
+    * @param inst La instruccion a generalizar
+    * @return La instruccion generalizada
+    */
     public String getInst( String inst ){
 
         StringBuilder gInst = new StringBuilder( inst );                        // cadena mutable con la instruccion
@@ -229,8 +255,21 @@ public class DecodeTools
 
     }
 
-    public String getOpc( String inst ){
-        return null;
+    /**
+    * Metodo que convierte un opcode general
+    * en su forma final en binario
+    * @param inst El opcode general
+    * @return El opcode final en binario
+    */
+    public String getOpc( String gOpc ){
+
+        StringBuilder opc = new StringBuilder( gOpc );
+
+        opc = changeBit( opc.toString() );
+        opc = changeRegister( opc.toString() );
+        opc = changeCondition( opc.toString() );
+
+        return opc.toString();
     }
 
     private void fillTables(){
@@ -283,4 +322,3 @@ public class DecodeTools
 //TODO: Mover todas la tablas a un solo lado - estoy pensando en opcodes
 //TODO: Hacer un metodo que cambie los parametros generales (etiqutas, numeros y eso) para obtener el opcode
 //TODO: Los metodos para generalizar reigstros se pueden optimizar para que no hagan nada si no hay registros en la instruccion
-//TODO: Cambiar los valores de retorno para que regreese un StringBuilder
