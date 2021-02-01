@@ -20,9 +20,10 @@ public class DecodeTools
     private Hashtable< String, String> conditions;                              // tabla con los opcodes de las condiciones
 
     private String register;                                                    // registro de la instruccion, si lo tiene
-    private String pairR;
+    private String altR;                                                        // segundo registro, si lo tiene
+    private String pairR;                                                       // registro par, si lo tiene
     private String condition;                                                   // condiciones de la instruccion, si las tiene
-    private String bit;
+    private String bit;                                                         // bit, si lo tiene
 
     public DecodeTools(){
         fillTables();
@@ -34,8 +35,25 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private StringBuilder getRegister( String instruction ){
-        String result = instruction.replaceAll("( A)|( B)|( C)|( D)|( E)|( H)|( L)", " r");
-        result = result.replaceAll("( A')|( B')|( C')|( D')|( E')|( H')|( L')", " r'");
+        String result = instruction.replaceFirst("( A)|( B)|( C)|( D)|( E)|( H)|( L)", " r");
+
+        if ( result.contains( " A" ) ) {
+            this.altR = "A";
+        } else if ( result.contains( " B" ) ) {
+            this.altR = "B";
+        } else if ( result.contains( " C" ) ) {
+            this.altR = "C";
+        } else if ( result.contains( " D" ) ) {
+            this.altR = "D";
+        } else if ( result.contains( " E" ) ) {
+            this.altR = "E";
+        } else if ( result.contains( " H" ) ) {
+            this.altR = "H";
+        } else if ( result.contains( " L" ) ) {
+            this.altR = "L";
+        }
+
+        result = result.replaceAll("( A)|( B)|( C)|( D)|( E)|( H)|( L)", " r'");
 
         if ( instruction.contains( " A" ) ) {
             this.register = "A";
@@ -64,15 +82,15 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private StringBuilder getPairR( String instruction ){
-        String result = instruction.replaceAll("(BC)|(DE)|(HL)|(SP)|(AF)|(IX)|(IY)", "dd");
+        String result = instruction.replaceAll("( BC)|( DE)|( HL)|( SP)|( AF)|( IX)|( IY)", " dd");
 
         if ( instruction.contains( "BC" ) ) {
             this.pairR = "BC";
         } else if ( instruction.contains( "DE" ) ) {
             this.pairR = "DE";
-        } else if ( instruction.contains( "HL" ) ) {
+        } else if ( instruction.contains( "( HL)|( IX)|( IY)" ) ) {
             this.pairR = "HL";
-        } else if ( instruction.contains( "AF" ) ) {
+        } else if ( instruction.contains( "( AF)|( SP)" ) ) {
             this.pairR = "AF";
         }
 
@@ -132,9 +150,13 @@ public class DecodeTools
      */
     public String changeRegister( String opcode ){
         if ( this.register != null ) {
-            String opc = opcode.replaceAll("(r,)|(r)", registers.get(register) );
-            String opc2 = opc.replaceAll("(')", "");
-            return opc2;
+            String opc = opcode.replaceFirst("(r,)|(r)", registers.get(register) );
+            if ( this.altR != null ) {
+                String opc2 = opc.replaceAll("(r')", registers.get(altR) );
+                return opc2;
+            } else {
+                return opc;
+            }
         } else if ( this.pairR != null ){
             return opcode.replaceAll("dd,", pairsR.get(pairR) );
         } else {
@@ -174,8 +196,8 @@ public class DecodeTools
         StringBuilder gInst = new StringBuilder( inst );                        // cadena mutable con la instruccion
 
         gInst = getBit( gInst.toString() );
-        gInst = getRegister( gInst.toString() );                                // Se verifican los registros individuales
         gInst = getPairR( gInst.toString() );
+        gInst = getRegister( gInst.toString() );                                // Se verifican los registros individuales
 
         return gInst.toString();
 

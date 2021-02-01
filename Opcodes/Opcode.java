@@ -106,21 +106,21 @@ public class Opcode
         this.instructions.put( "LD r, (HL)",  "01 r 110" );
         //this.instructions.put( "LD r, (IX+d)",  "01 011 101 \n 01 r 110 \n d" );
         //this.instructions.put( "LD r, (IY+d)",  "11 111 101 \n 01 r 110 \n d" );
-        this.instructions.put( "LD HL, r",  "01 110 r" );
+        this.instructions.put( "LD (HL), r",  "01 110 r" );
         //this.instructions.put( "LD (IX+d), r",  "11 011 101 \n01 110 r \n d" );
         //this.instructions.put( "LD (IY+d), r",  "11 111 101 \n01 110 r \n d" );
         //this.instructions.put( "LD (HL), n",  "00 110 110 \n n" );
         //this.instructions.put( "LD (IX+d), n",  "11 011 101 \n 00 110 110 \n d \n n" );
-        this.instructions.put( "LD A, (BC)",  "00 001 010" );
-        this.instructions.put( "LD A, (BE)",  "00 011 010" );
+        this.instructions.put( "LD r, (dd)",  "00 dd1 010" );
+        this.instructions.put( "LD r, (dd)",  "00 dd1 010" );
         //this.instructions.put( "LD A, (nn)",  "00 111 010 \n n \n n" );
-        this.instructions.put( "LD (BC), A",  "00 001 010" );
-        this.instructions.put( "LD (DE), A",  "00 001 010" );
-        //this.instructions.put( "LD (nn), A",  "00 110 010 \n n \n n" );
-        this.instructions.put( "LD A, I",  "11 101 101 \n01 010 111" );
-        this.instructions.put( "LD A, R",  "11 101 101 \n01 011 111" );
-        this.instructions.put( "LD I, A",  "11 101 101 \n01 000 111" );
-        this.instructions.put( "LD R, A",  "11 101 101 \n01 001 111" );
+        this.instructions.put( "LD (BC), r",  "00 000 010" );                   // se sabe por tablas que r solo puede ser A
+        this.instructions.put( "LD (DE), r",  "00 010 010" );
+        //this.instructions.put( "LD (nn), r",  "00 110 010 \n n \n n" );
+        this.instructions.put( "LD r, I",  "11 101 101 \n01 010 111" );
+        this.instructions.put( "LD r, R",  "11 101 101 \n01 011 111" );
+        this.instructions.put( "LD I, r",  "11 101 101 \n01 000 111" );
+        this.instructions.put( "LD R, r",  "11 101 101 \n01 001 111" );
 
         //Grupo de carga de 16 bits
         //this.instructions.put( "LD dd, nn",  "00 dd0 001 \n n \n n" );
@@ -168,12 +168,12 @@ public class Opcode
         // this.instructions.put( "ADD (IY+d)",  "11 111 101 \n10 000 110 d ");
         //this.instructions.put( "ADC n",       "11 001 110 n");
         this.instructions.put( "ADC r",       "10 001 r");
-        this.instructions.put( "ADC (HL)",    "10 010 110");
+        this.instructions.put( "ADC (dd)",    "10 010 110");
         //this.instructions.put( "ADC (IX+d)",  "11 011 101\n10 001 110 d");
         //this.instructions.put( "ADC (IY+d)",  "11 111 101\n10 001 110 d");
         //this.instructions.put( "SUB n",       "11 010 110 n");
         this.instructions.put( "SUB r",       "10 010 r");
-        this.instructions.put( "SUB (HL)",    "10 010 110");
+        this.instructions.put( "SUB (dd)",    "10 010 110");
         //this.instructions.put( "SUB (IX+d)",  "11 011 101 \n10 010 110 d");
         //this.instructions.put( "SUB (IY+d)",  "11 111 101 \n10 010 110 d");
         //this.instructions.put( "SUB n",       "11 011 110 n");
@@ -206,7 +206,7 @@ public class Opcode
         this.instructions.put( "INC (HL)",      "00 110 100");
         // this.instructions.put( "INC (IX+d)",    "11 011 101 \n00 110 100 d");
         //this.instructions.put( "INC (IY+d)",    "11 111 101 \n00 110 100 d");
-        this.instructions.put( "DEC B",       "00 r 101");
+        this.instructions.put( "DEC r",       "00 r 101");
         this.instructions.put( "DEC (HL)",    "00 110 101");
         //this.instructions.put( "DEC (IX+d)",  "11 011 101 \n00 110 101 d");
         //this.instructions.put( "DEC (IY+d)",  "11 111 101 \n00 110 101 d");
