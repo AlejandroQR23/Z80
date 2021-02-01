@@ -111,8 +111,8 @@ public class Opcode
         //this.instructions.put( "LD (IY+d), r",  "11 111 101 \n01 110 r \n d" );
         //this.instructions.put( "LD (HL), n",  "00 110 110 \n n" );
         //this.instructions.put( "LD (IX+d), n",  "11 011 101 \n 00 110 110 \n d \n n" );
-        this.instructions.put( "LD r, (dd)",  "00 dd1 010" );
-        this.instructions.put( "LD r, (dd)",  "00 dd1 010" );
+        this.instructions.put( "LD r, (BC)",  "00 001 010" );
+        this.instructions.put( "LD r, (DE)",  "00 011 010" );
         //this.instructions.put( "LD A, (nn)",  "00 111 010 \n n \n n" );
         this.instructions.put( "LD (BC), r",  "00 000 010" );                   // se sabe por tablas que r solo puede ser A
         this.instructions.put( "LD (DE), r",  "00 010 010" );
@@ -257,15 +257,15 @@ public class Opcode
         // Grupo de salto
         //this.instructions.put( "JP nn",     "11 000 011" );
 		//this.instructions.put( "JP cc, nn", "11 cc 010" );
-        //this.instructions.put( "JR e",      "00 011 000" );
-        //this.instructions.put( "JR C, e",   "00 111 000" );
-        //this.instructions.put( "JR NC, e",  "00 110 000" );
-		//this.instructions.put( "JR Z, e",   "00 101 000" );
-        //this.instructions.put( "JR NZ, e",  "00 100 000" );
+        this.instructions.put( "JR e",      "00 011 000" );
+        this.instructions.put( "JR C, e",   "00 111 000" );
+        this.instructions.put( "JR NC, e",  "00 110 000" );
+		this.instructions.put( "JR Z, e",   "00 101 000" );
+        this.instructions.put( "JR NZ, e",  "00 100 000" );
         this.instructions.put( "JP (HL)",   "11 101 001" );
         this.instructions.put( "JP (IX)",   "11 011 101 \n11 101 001" );
 		this.instructions.put( "JP (IY)",   "11 111 101 \n11 101 001" );
-        // this.instructions.put( "DJNZ, e",   "00 010 000" );
+        this.instructions.put( "DJNZ, e",   "00 010 000" );
 
         // Grupo de llamada y retorno
         // this.instructions.put( "CALL nn",    "11 001 101" );

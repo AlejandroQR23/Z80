@@ -35,6 +35,10 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private StringBuilder getRegister( String instruction ){
+        if ( instruction.contains("JP") | instruction.contains("JR") ) {
+            return new StringBuilder(instruction);
+        }
+
         String result = instruction.replaceFirst("( A)|( B)|( C)|( D)|( E)|( H)|( L)", " r");
 
         if ( result.contains( " A" ) ) {
@@ -102,7 +106,7 @@ public class DecodeTools
      * por una cc, asi la instruccion estara en su forma general
      */
     private StringBuilder getCondition( String instruction ){
-        String result = instruction.replaceAll("( NZ)|( Z)|( NC)|( C)", " cc");
+        String result = instruction.replaceAll("( NZ)(, nn)", " cc, nn");
 
         if ( instruction.contains("NZ") ) {
             this.condition = "NZ";
@@ -118,7 +122,7 @@ public class DecodeTools
     }
 
     private StringBuilder getBit( String instruction ){
-        String result = instruction.replaceAll("[0-7]", "b");
+        String result = instruction.replaceFirst("[0-7](,)", "b,");
 
         if ( instruction.contains("0") ) {
             this.bit = "0";
@@ -138,6 +142,11 @@ public class DecodeTools
             this.bit = "7";
         }
 
+        return new StringBuilder(result);
+    }
+
+    private StringBuilder getEti( String instruction ){
+        String result = instruction.replaceAll("(eti)([1-9]*[0-9])*", "e");
         return new StringBuilder(result);
     }
 
@@ -195,9 +204,12 @@ public class DecodeTools
 
         StringBuilder gInst = new StringBuilder( inst );                        // cadena mutable con la instruccion
 
+        gInst = getEti( gInst.toString() );
         gInst = getBit( gInst.toString() );
         gInst = getPairR( gInst.toString() );
         gInst = getRegister( gInst.toString() );                                // Se verifican los registros individuales
+        //gInst = getNumber( gInst.toString() );
+        //gInst = getCondition( gInst.toString() );
 
         return gInst.toString();
 
