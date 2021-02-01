@@ -24,6 +24,8 @@ public class DecodeTools
     private String pairR;                                                       // registro par, si lo tiene
     private String condition;                                                   // condiciones de la instruccion, si las tiene
     private String bit;                                                         // bit, si lo tiene
+    private String number;                                                      // numero, si lo tiene
+    private String displacement;                                                // desplazamiento, si lo tiene
 
     public DecodeTools(){
         fillTables();
@@ -174,7 +176,39 @@ public class DecodeTools
     private StringBuilder getNumber( String instruction ){
         String result = instruction.replaceAll("(2[05][0-5]|2[0-4][0-9]|1?[0-9][0-9])", "n");
         String result2 = instruction.replaceAll("([0-6]?[0-9]{0,2}[0-9][0-9])", "nn");
+
+        char[] str_div = instruction.toCharArray();
+        String n = "";
+        for ( int i = 0; i < str_div.length; i++ ) {
+            if ( Character.isDigit( str_div[i] ) ) {
+                n += str_div[i];
+            }
+        }
+        if ( !n.equals("") ) {
+            this.number = n;
+        }
+
         return new StringBuilder(result2);
+    }
+
+    private StringBuilder getDis( String instruction ){
+        if ( instruction.contains("IM ") ) {
+            return new StringBuilder( instruction );
+        }
+        String result = instruction.replaceAll("(2[05][0-5]|2[0-4][0-9]|1?[1-9]?[0-9])", "d");
+
+        char[] str_div = instruction.toCharArray();
+        String n = "";
+        for ( int i = 0; i < str_div.length; i++ ) {
+            if ( Character.isDigit( str_div[i] ) ) {
+                n += str_div[i];
+            }
+        }
+        if ( !n.equals("") ) {
+            this.displacement = n;
+        }
+
+        return new StringBuilder(result);
     }
 
     /**
@@ -234,6 +268,24 @@ public class DecodeTools
         }
     }
 
+    private StringBuilder changeNumber( String opcode ){
+        if( this.number != null ){
+            String opc = opcode.replace("n", this.number );
+            return new StringBuilder( opc );
+        } else {
+            return new StringBuilder( opcode );
+        }
+    }
+
+    private StringBuilder changeDis( String opcode ){
+        if ( this.displacement != null ) {
+            String opc = opcode.replace("d", this.number );
+            return new StringBuilder( opc );
+        } else {
+            return new StringBuilder( opcode );
+        }
+    }
+
     /**
     * Metodo que convierte una isntruccion dada
     * en su forma general para poder buscarla en tablas
@@ -249,6 +301,7 @@ public class DecodeTools
         gInst = getPairR( gInst.toString() );
         gInst = getRegister( gInst.toString() );                                // Se verifican los registros individuales
         gInst = getNumber( gInst.toString() );
+        gInst = getDis( gInst.toString() );
         gInst = getCondition( gInst.toString() );
 
         return gInst.toString();
@@ -267,6 +320,8 @@ public class DecodeTools
 
         opc = changeBit( opc.toString() );
         opc = changeRegister( opc.toString() );
+        opc = changeNumber( opc.toString() );
+        opc = changeDis( opc.toString() );
         opc = changeCondition( opc.toString() );
 
         return opc.toString();
