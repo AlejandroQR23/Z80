@@ -1,0 +1,8 @@
+JR eti1
+JR C, eti24
+JP (HL)
+JP (IX)
+JP (IY)
+JP 01
+JP NZ, 10
+DJNZ, eti100

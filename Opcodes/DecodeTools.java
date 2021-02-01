@@ -122,6 +122,11 @@ public class DecodeTools
     }
 
     private StringBuilder getBit( String instruction ){
+
+        if ( instruction.contains("IM ") ) {
+            return new StringBuilder( instruction );
+        }
+
         String result = instruction.replaceFirst("[0-7](,)", "b,");
 
         if ( instruction.contains("0") ) {
@@ -145,9 +150,18 @@ public class DecodeTools
         return new StringBuilder(result);
     }
 
+    /*
+     *
+     */
     private StringBuilder getEti( String instruction ){
         String result = instruction.replaceAll("(eti)([1-9]*[0-9])*", "e");
         return new StringBuilder(result);
+    }
+
+    private StringBuilder getNumber( String instruction ){
+        String result = instruction.replaceAll("(2[05][0-5]|2[0-4][0-9]|1?[0-9][0-9])", "n");
+        String result2 = instruction.replaceAll("([0-6]?[0-9]{0,2}[0-9][0-9])", "nn");
+        return new StringBuilder(result2);
     }
 
     /**
@@ -208,8 +222,8 @@ public class DecodeTools
         gInst = getBit( gInst.toString() );
         gInst = getPairR( gInst.toString() );
         gInst = getRegister( gInst.toString() );                                // Se verifican los registros individuales
-        //gInst = getNumber( gInst.toString() );
-        //gInst = getCondition( gInst.toString() );
+        gInst = getNumber( gInst.toString() );
+        gInst = getCondition( gInst.toString() );
 
         return gInst.toString();
 
