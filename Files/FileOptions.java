@@ -14,7 +14,7 @@ import java.io.*;                                                               
 public class FileOptions
 {
 
-    String address = "tests/";                                                  // direccion donde se guardan los archivos
+    String address = "../tests/";   // direccion donde se guardan los archivos
     String fileInst;                                                            // nombre del archivo de instrucciones
     String fileOpc;                                                             // nombre del archivo de opcodes
 
