@@ -159,7 +159,7 @@ public class Opcode
         this.instructions.put( "CPDR",        "11 101 101 \n10 111 001");
 
         // Grupo aritmetico y logico de 8 bits
-        this.instructions.put( "ADD A, r",       "10 000 r");
+        this.instructions.put( "ADD r",       "10 000 r");
         this.instructions.put( "ADD n",       "11 000 110 n");
         this.instructions.put( "ADD (HL)",    "10 000 110");
         this.instructions.put( "ADD (IX+d)",  "11 011 101 \n10 000 110 d");

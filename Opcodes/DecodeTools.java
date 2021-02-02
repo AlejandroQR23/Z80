@@ -94,9 +94,9 @@ public class DecodeTools
             this.pairR = "BC";
         } else if ( instruction.contains( "DE" ) ) {
             this.pairR = "DE";
-        } else if ( instruction.contains( "( HL)|( IX)|( IY)" ) ) {
+        } else if ( instruction.contains( "HL" ) ) {
             this.pairR = "HL";
-        } else if ( instruction.contains( "( AF)|( SP)" ) ) {
+        } else if ( instruction.contains( "AF" ) ) {
             this.pairR = "AF";
         }
 
