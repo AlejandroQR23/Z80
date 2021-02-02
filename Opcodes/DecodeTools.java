@@ -18,6 +18,7 @@ public class DecodeTools
     private Hashtable< String, String> pairsR;                                  // tabla con los opcodes de los registros pares
     private Hashtable< String, String> bits;                                    // tabla con los opcodes de los bits
     private Hashtable< String, String> conditions;                              // tabla con los opcodes de las condiciones
+    private Hashtable< String, String> ps;
 
     private String register;                                                    // registro de la instruccion, si lo tiene
     private String altR;                                                        // segundo registro, si lo tiene
@@ -26,6 +27,7 @@ public class DecodeTools
     private String bit;                                                         // bit, si lo tiene
     private String number;                                                      // numero, si lo tiene
     private String displacement;                                                // desplazamiento, si lo tiene
+    private String p;
 
     public DecodeTools(){
         fillTables();
@@ -109,7 +111,7 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private StringBuilder getCondition( String instruction ){
-        String result = instruction.replaceAll("( NZ)(, nn)", " cc, nn");
+        String result = instruction.replaceAll("( NZ| NC| C| Z)", " cc");
 
         if ( instruction.contains("NZ") ) {
             this.condition = "NZ";
@@ -174,7 +176,6 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private StringBuilder getNumber( String instruction ){
-        String result = instruction.replaceAll("(2[05][0-5]|2[0-4][0-9]|1?[0-9][0-9])", "n");
         String result2 = instruction.replaceAll("([0-6]?[0-9]{0,2}[0-9][0-9])", "nn");
 
         char[] str_div = instruction.toCharArray();
@@ -209,6 +210,16 @@ public class DecodeTools
         }
 
         return new StringBuilder(result);
+    }
+
+    private StringBuilder getP( String instruction ){
+        if ( instruction.contains("RST") ) {
+            String result = instruction.replaceAll("00H|08H|10H|18H|20H|28H|30H|38H", "p");
+            this.p = instruction.substring(4);
+            return new StringBuilder(result);
+        } else {
+            return new StringBuilder(instruction);
+        }
     }
 
     /**
@@ -270,7 +281,7 @@ public class DecodeTools
 
     private StringBuilder changeNumber( String opcode ){
         if( this.number != null ){
-            String opc = opcode.replace("n", this.number );
+            String opc = opcode.replace("nn", this.number );
             return new StringBuilder( opc );
         } else {
             return new StringBuilder( opcode );
@@ -280,6 +291,15 @@ public class DecodeTools
     private StringBuilder changeDis( String opcode ){
         if ( this.displacement != null ) {
             String opc = opcode.replace("d", this.number );
+            return new StringBuilder( opc );
+        } else {
+            return new StringBuilder( opcode );
+        }
+    }
+
+    private StringBuilder changeP( String opcode ){
+        if ( this.p != null ) {
+            String opc = opcode.replace("t", ps.get( p ));
             return new StringBuilder( opc );
         } else {
             return new StringBuilder( opcode );
@@ -296,6 +316,7 @@ public class DecodeTools
 
         StringBuilder gInst = new StringBuilder( inst );                        // cadena mutable con la instruccion
 
+        gInst = getP( gInst.toString() );
         gInst = getEti( gInst.toString() );
         gInst = getBit( gInst.toString() );
         gInst = getPairR( gInst.toString() );
@@ -318,6 +339,7 @@ public class DecodeTools
 
         StringBuilder opc = new StringBuilder( gOpc );
 
+        opc = changeP( opc.toString() );
         opc = changeBit( opc.toString() );
         opc = changeRegister( opc.toString() );
         opc = changeNumber( opc.toString() );
@@ -334,6 +356,7 @@ public class DecodeTools
         this.pairsR = new Hashtable<>();
         this.bits = new Hashtable<>();
         this.conditions = new Hashtable<>();
+        this.ps = new Hashtable<>();
 
         // Llenado de la tabla de registros
         this.registers.put("B", "000");
@@ -369,6 +392,16 @@ public class DecodeTools
         this.conditions.put("PE", "101");
         this.conditions.put("P",  "110");
         this.conditions.put("M",  "111");
+
+        // Llenado de la tabla de p
+        this.ps.put("00H", "000");
+        this.ps.put("08H", "001");
+        this.ps.put("10H", "010");
+        this.ps.put("18H", "011");
+        this.ps.put("20H", "100");
+        this.ps.put("28H", "101");
+        this.ps.put("30H", "110");
+        this.ps.put("38H", "111");
 
     }
 
