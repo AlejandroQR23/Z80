@@ -111,7 +111,11 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private StringBuilder getCondition( String instruction ){
-        String result = instruction.replaceAll("( NZ| NC| C| Z)", " cc");
+        if( !instruction.contains("JP") ){
+            return new StringBuilder(instruction);
+        }
+
+        String result = instruction.replaceAll("( NZ| NC| C| Z| PO| PE| P| M)", " cc");
 
         if ( instruction.contains("NZ") ) {
             this.condition = "NZ";
@@ -121,6 +125,14 @@ public class DecodeTools
             this.condition = "NC";
         } else if ( instruction.contains("C") ) {
             this.condition = "C";
+        } else if ( instruction.contains("PO") ) {
+            this.condition = "PO";
+        } else if ( instruction.contains("PE") ) {
+            this.condition = "PE";
+        } else if ( instruction.contains("P") ) {
+            this.condition = "P";
+        } else if ( instruction.contains("M") ) {
+            this.condition = "M";
         }
 
         return new StringBuilder(result);
