@@ -96,7 +96,7 @@ public class Interfaz extends JFrame {
     private JLabel verJLabel4() {
         JLabel ejemplo = new JLabel();
         ejemplo.setText("ENSAMBLADOR");
-        ejemplo.setBounds(185, 150, 700, 200);
+        ejemplo.setBounds(300, 150, 700, 200);
         ejemplo.setFont(new Font("SANS_SERIF", 2, 27));
 
         return ejemplo;
