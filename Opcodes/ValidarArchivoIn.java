@@ -27,7 +27,7 @@ public class ValidarArchivoIn {
             //System.out.println(dataIn);
             */
             try {
-                File fichero = new File ("tests/" + nombreArchivo);
+                File fichero = new File ("../tests/" + nombreArchivo);
                 BufferedWriter bw = new BufferedWriter(new FileWriter(fichero));
                 bw.write(dataIn);
                 bw.close();

@@ -106,7 +106,7 @@ public class ConvertirAHexadecimal {
      */
     static File crearArchivo(){
         //direccion donde se guardan los archivos
-        String address ="tests/";   
+        String address ="../tests/";   
         String name = Interfaz.nombreArchivoIn + ".lst";
         File file = new File(address + name);
         
