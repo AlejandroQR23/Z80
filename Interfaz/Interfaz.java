@@ -230,7 +230,7 @@ public class Interfaz extends JFrame {
      */
     private String verArchivo(){
         //Direccion del archivo ensamblado
-        File fichero = new File ("tests/" + ConvertirAHexadecimal.nombreArchivoOut);
+        File fichero = new File ("../tests/" + ConvertirAHexadecimal.nombreArchivoOut);
         String cadena = "";    
         try (FileReader fr = new FileReader(fichero)) {
             
@@ -245,10 +245,18 @@ public class Interfaz extends JFrame {
 
         return cadena;
     }
+
+    public static void crearDirectorio(){
+        File directorio = new File("../tests/");
+        if (!(directorio.exists())) {
+            directorio.mkdirs();
+        }
+    }
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
+                    crearDirectorio();
                     Interfaz v1 = new Interfaz();
                     
                 } catch (Exception e) {
