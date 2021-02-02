@@ -8,7 +8,7 @@ import java.io.*;                                                               
  * y escribir sobre archivos de texto
  * con las instrucciones u opcodes de ensamblador
  *
- * @version 0.1 15/01/2021
+ * @version 1.0 20/01/2021
  * @author Alejandro Quijano
  */
 public class FileOptions
@@ -95,5 +95,3 @@ public class FileOptions
     }
 
 }
-
-//TODO: Cambiar el tipo de archivo a .asm
