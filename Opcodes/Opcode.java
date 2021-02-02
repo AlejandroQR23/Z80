@@ -1,8 +1,11 @@
 package Opcodes;
 
-import java.util.*;                                                             // colecciones
-import java.io.*;                                                               // archivos
-import Opcodes.DecodeTools;
+import java.util.*; // colecciones
+
+import javax.swing.JOptionPane;
+
+import java.io.*; // archivos
+
 
 /**
  * Una clase con los metodos convenientes trabajar
@@ -35,10 +38,12 @@ public class Opcode
     public LinkedList<String> decodeInst( LinkedList<String> list ){
 
         LinkedList< String > opcodes = new LinkedList<>();
+        int i = 1;
         for ( String inst : list ) {
 
             DecodeTools decoder = new DecodeTools();                            // herramienta de decodificacion
-
+            
+            try {            
             System.out.print( "\n Intruccion: " + inst );
             String gInst = decoder.getInst( inst );                             // se obtiene la instruccion general
             System.out.print( "\n Intruccion G: " + gInst );
@@ -48,7 +53,17 @@ public class Opcode
             System.out.println( "\n Opcode " + opcode );
 
             opcodes.add( opcode );
+            i++;
+            
+            } catch (Exception e){
+                e.printStackTrace();
+                
+                JOptionPane.showMessageDialog(null, "Archivo contiene instrucción no valida en la linea " + i);
 
+                break;
+            }
+            
+           
         }
 
         return opcodes;

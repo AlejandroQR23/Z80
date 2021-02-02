@@ -1,7 +1,8 @@
 package Opcodes;
 
+import java.io.*;
 import java.util.*;
-
+import Interfaz.*;
 /**
  * Clase que da formato a los códigos ya en binario 
  * para ser convertidos en hexadecimal 
@@ -12,6 +13,7 @@ import java.util.*;
  */
 public class ConvertirAHexadecimal {
 
+    public static String nombreArchivoOut = "";
 
     /**
      * Convierte una cadena en binario a hexadecimal
@@ -46,9 +48,11 @@ public class ConvertirAHexadecimal {
      * código final en hexadecimal.
      * @param dataIn Códigos en binario
      */
-    static void formatear(LinkedList<String> dataIn){
+    public static void formatear(LinkedList<String> dataIn){
+        //Crea archivo de salida .lst
+        File file = crearArchivo();
 
-
+        //System.out.println( dataIn);
         for (String string : dataIn) {
             
             String codigo = string;
@@ -57,8 +61,8 @@ public class ConvertirAHexadecimal {
             String dataFinal= "";
             String yaEnHexa = "";
 
-            if (string.contains("d")) {
-                cadenaDividida = string.split("d");
+            if (string.contains("w")) {
+                cadenaDividida = string.split("\nw");
                 codigo = cadenaDividida[0];
                 valor = cadenaDividida[1];
 
@@ -90,7 +94,54 @@ public class ConvertirAHexadecimal {
             }
 
             System.out.println(dataFinal);
+            writeFile(dataFinal,file );
         }
+
+
+    }
+
+    /**
+     * Crea archivo .lst 
+     * que contiene la salida del ensamblador
+     */
+    static File crearArchivo(){
+        //direccion donde se guardan los archivos
+        String address ="tests/";   
+        String name = Interfaz.nombreArchivoIn + ".lst";
+        File file = new File(address + name);
+        
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            else{
+                file.delete();
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ConvertirAHexadecimal.nombreArchivoOut = name;
+
+        System.out.println("Name out: " +ConvertirAHexadecimal.nombreArchivoOut);
+
+        return file;
+    }
+
+
+    static public void writeFile(String dataIn, File file){
+        
+        try {
+  
+            FileWriter fw = new FileWriter (file.getAbsoluteFile(), true);
+            BufferedWriter bw = new BufferedWriter (fw);
+            bw.write( dataIn + "\n");
+            bw.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void main(String[] args) {

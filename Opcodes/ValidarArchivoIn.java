@@ -13,24 +13,10 @@ import javax.swing.*;
  */
 public class ValidarArchivoIn {
 
-    /**
-     * Los archivos .asm con código ensamblador deben 
-     * tener el header: //cpu z80 ensamblar//
-     * 
-     * @param cadena
-     */
-    public static String leerHeader(String cadena) {
-
-        
-
-        System.out.println("Hola");
-
-        return cadena;
-  
-    }
 
     public static void obtenerCodigo(String cadena, String nombreArchivo){
-        String dataIn = "";
+        String dataIn = cadena;
+        /*String dataIn = "";
         String[] cadenaDividida; 
         if ( cadena.contains("cpu z80 ensamblar &&")) {
             //System.out.println("data valida");
@@ -38,8 +24,8 @@ public class ValidarArchivoIn {
             cadenaDividida = cadena.split("&&");
             dataIn = cadenaDividida[1];
 
-            System.out.println(dataIn);
-            
+            //System.out.println(dataIn);
+            */
             try {
                 File fichero = new File ("tests/" + nombreArchivo);
                 BufferedWriter bw = new BufferedWriter(new FileWriter(fichero));
@@ -48,12 +34,12 @@ public class ValidarArchivoIn {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+       /* }
         else{
             //Codigo no valido
             JOptionPane.showMessageDialog(null, "Archivo no valido" );
             
-        }
+        }*/
 
     }
 
