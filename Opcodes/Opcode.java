@@ -107,8 +107,8 @@ public class Opcode
         this.instructions.put( "LD (HL), r",  "01 110 r" );
         this.instructions.put( "LD (IX+d), r",  "11 011 101 \n01 110 r \n d" );
         this.instructions.put( "LD (IY+d), r",  "11 111 101 \n01 110 r \n d" );
-        this.instructions.put( "LD (HL), n",  "00 110 110 \n n" );
-        this.instructions.put( "LD (IX+d), n",  "11 011 101 \n 00 110 110 \n d \n n" );
+        this.instructions.put( "LD (HL), nn",  "00 110 110 \n nn" );
+        this.instructions.put( "LD (IX+d), nn",  "11 011 101 \n 00 110 110 \n d \n nn" );
         this.instructions.put( "LD r, (BC)",  "00 001 010" );
         this.instructions.put( "LD r, (DE)",  "00 011 010" );
         this.instructions.put( "LD r, (nn)",  "00 111 010 \n nn" );
@@ -132,8 +132,8 @@ public class Opcode
         this.instructions.put( "LD (nn), IX",  "11 011 101 \n 00 100 010 \n nn" );
         this.instructions.put( "LD (nn), IY",  "11 111 101 \n 00 100 010 \n nn" );
         //this.instructions.put( "LD SP, HL", "11 111 001" );
-        this.instructions.put( "LD SP, IX", "11 011 101 \n11 111 001" );
-        this.instructions.put( "LD SP, IY", "11 111 101 \n11 111 001" );
+        this.instructions.put( "LD dd, IX", "11 011 101 \n11 111 001" );        // dd solo deberia ser SP
+        this.instructions.put( "LD dd, IY", "11 111 101 \n11 111 001" );        // dd solo deberia ser SP
         this.instructions.put( "PUSH dd",   "11 dd0 101" );
         this.instructions.put( "PUSH AF",   "11 110 101" );
         this.instructions.put( "PUSH IX",   "11 011 101 \n11 100 101" );
@@ -145,7 +145,7 @@ public class Opcode
 
         // Grupo de transferencia e intercambio
         //this.instructions.put( "EX DE, HL",   "11 101 011" );
-        this.instructions.put( "EX AF, AF'",  "00 001 000" );
+        //this.instructions.put( "EX AF, AF'",  "00 001 000" );
         this.instructions.put( "EXX",         "11 011 001" );
         this.instructions.put( "EX (SP), dd", "11 100 011" );                   // dd solo puede ser HL
         this.instructions.put( "EX (SP), IX", "11 011 101 \n11 100 011" );
@@ -161,7 +161,7 @@ public class Opcode
 
         // Grupo aritmetico y logico de 8 bits
         this.instructions.put( "ADD r",       "10 000 r");
-        this.instructions.put( "ADD nn",       "11 000 110 nn");
+        this.instructions.put( "ADD nn",      "11 000 110 nn");
         this.instructions.put( "ADD (HL)",    "10 000 110");
         this.instructions.put( "ADD (IX+d)",  "11 011 101 \n10 000 110 d");
         this.instructions.put( "ADD (IY+d)",  "11 111 101 \n10 000 110 d ");

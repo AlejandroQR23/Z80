@@ -90,7 +90,7 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private StringBuilder getPairR( String instruction ){
-        String result = instruction.replaceAll("( BC)|( DE)|( HL)|( SP)|( AF)|( IX)|( IY)", " dd");
+        String result = instruction.replaceAll("( BC)|( DE)|( HL)|( SP)", " dd");
 
         if ( instruction.contains( "BC" ) ) {
             this.pairR = "BC";
@@ -98,8 +98,8 @@ public class DecodeTools
             this.pairR = "DE";
         } else if ( instruction.contains( "HL" ) ) {
             this.pairR = "HL";
-        } else if ( instruction.contains( "AF" ) ) {
-            this.pairR = "AF";
+        } else if ( instruction.contains( "SP" ) ) {
+            this.pairR = "SP";
         }
 
         return new StringBuilder(result);
@@ -111,7 +111,7 @@ public class DecodeTools
      * @param instruction La instruccion a generalizar
      */
     private StringBuilder getCondition( String instruction ){
-        if( !instruction.contains("JP") ){
+        if( !instruction.contains("JP") & !instruction.contains("CALL") & !instruction.contains("RET") ){
             return new StringBuilder(instruction);
         }
 
