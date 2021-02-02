@@ -3,12 +3,13 @@ package Interfaz;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.validation.Validator;
 
 import Opcodes.*;
+import Files.*;
 
 /**
  * Clase que implementa la interfaz gráfica del ensamblador
@@ -17,8 +18,9 @@ import Opcodes.*;
  * @author Lizeth Durán González
  */
 public class Interfaz extends JFrame {
+   
     JPanel contentPane;
-
+    public static String nombreArchivoIn = "";
 
     public Interfaz() {
 
@@ -36,7 +38,7 @@ public class Interfaz extends JFrame {
         JButton btnTraducir = botonTraducir(textArea);
         btnTraducir.setVisible(false);
         escogerArchivo(btnTraducir, textArea);
-        
+
     }
 
     /**
@@ -55,6 +57,7 @@ public class Interfaz extends JFrame {
 
     /**
      * Etiqueta 1 a mostrar en la ventana
+     * 
      * @return
      */
     private JLabel verJLabel1() {
@@ -68,6 +71,7 @@ public class Interfaz extends JFrame {
 
     /**
      * Etiqueta 2 a mostrar en la ventana
+     * 
      * @return
      */
     private JLabel verJLabel2() {
@@ -81,6 +85,7 @@ public class Interfaz extends JFrame {
 
     /**
      * Etiqueta 3 a mostrar en la ventana
+     * 
      * @return
      */
     private JLabel verJLabel3() {
@@ -94,23 +99,24 @@ public class Interfaz extends JFrame {
 
     /**
      * Etiqueta 4 a mostra en la ventana
+     * 
      * @return
      */
     private JLabel verJLabel4() {
         JLabel ejemplo = new JLabel();
-        ejemplo.setText("ENSAMBLADOR");
-        ejemplo.setBounds(300, 150, 700, 200);
+        ejemplo.setText("ENSAMBLADOR FOR DUMMIES");
+        ejemplo.setBounds(190, 150, 700, 200);
         ejemplo.setFont(new Font("SANS_SERIF", 2, 27));
 
         return ejemplo;
     }
 
     /**
-     * Area de la ventana donde se mostrará el
-     * código
+     * Area de la ventana donde se mostrará el código
+     * 
      * @return
      */
-    private JTextArea verTextArea (){
+    private JTextArea verTextArea() {
         JTextArea textArea = new JTextArea();
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -121,21 +127,20 @@ public class Interfaz extends JFrame {
     }
 
     /**
-     * Permite hacer scroll a la ventana donde se mostrará
-     * el código
+     * Permite hacer scroll a la ventana donde se mostrará el código
      */
-    private JScrollPane verScroll (JTextArea textArea){
+    private JScrollPane verScroll(JTextArea textArea) {
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.setBounds(130, 330, 550, 200);
         return scroll;
     }
-    
+
     /**
-     * Muestra al usuario su directorio de archivos 
-     * de donde puede escoger el archivo tipo asm 
-     * a ser ensamblado.
+     * Muestra al usuario su directorio de archivos de donde puede escoger el
+     * archivo tipo asm a ser ensamblado.
      * 
      * El código en ensamblador se muestra en la ventana.
+     * 
      * @param btnTraducir
      * @param textArea
      */
@@ -152,9 +157,10 @@ public class Interfaz extends JFrame {
 
                 if (seleccion == JFileChooser.APPROVE_OPTION) {
                     File fichero = fc.getSelectedFile();
-                    //Nombre del archivo seleccionado
-                    String nombreArchivo = fc.getName(fichero);
-                    
+                    // Nombre del archivo seleccionado
+                    String nombreArch = fc.getName(fichero);
+                    //System.out.println("NOmbre Arch: " + nombreArch);
+
                     try (FileReader fr = new FileReader(fichero)) {
                         String cadena = "";
                         int valor = fr.read();
@@ -163,10 +169,11 @@ public class Interfaz extends JFrame {
                             valor = fr.read();
                         }
                         textArea.setText(cadena);
-                        
-                        // Envia los datos del archivo .asm
-                        ValidarArchivoIn.obtenerCodigo(cadena, nombreArchivo);
 
+                        // Envia los datos del archivo .asm
+                        ValidarArchivoIn.obtenerCodigo(cadena, nombreArch);
+                        nombreArchivoIn = nombreArch.split(".asm")[0];
+                        //System.out.println("auxname: " + nombreArchivoIn);
                         btnTraducir.setVisible(true);
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -174,13 +181,13 @@ public class Interfaz extends JFrame {
                 }
             }
         });
-        contentPane.add(boton); 
+        contentPane.add(boton);
     }
 
     /**
-     * Al hacer clic al botón, 
-     * se manda a llamar al método que 
-     * inicia todo el proceso de ensamblado.
+     * Al hacer clic al botón, se manda a llamar al método que inicia todo el
+     * proceso de ensamblado.
+     * 
      * @param textArea
      * @return
      */
@@ -189,12 +196,24 @@ public class Interfaz extends JFrame {
         JButton boton = new JButton("Traducir");
         boton.setBounds(290, 550, 200, 20);
         contentPane.add(boton);
-        boton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        boton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
-                //Metodo que iniciará toda la traducción
-                //Opcode.saludar();
-                
+                // ************************************ */
+                // Metodo que iniciará toda la traducción
+
+                FileOptions f = new FileOptions(Interfaz.nombreArchivoIn);
+                LinkedList<String> list = f.readFile();                       
+               // se leen las instrucciones del archivo de texto
+               
+                f.createFile();                                       
+                // crea el archivo donde iran los opcodes
+
+                Opcode opc = new Opcode();
+                LinkedList<String> opcodes = opc.decodeInst( list );
+                f.writeFile( opcodes );  
+                ConvertirAHexadecimal.formatear(opcodes);
+
                 //Imprimir en textArea
                 String data = verArchivo();
                 textArea.setText(data);
@@ -211,7 +230,7 @@ public class Interfaz extends JFrame {
      */
     private String verArchivo(){
         //Direccion del archivo ensamblado
-        File fichero = new File ("tests/opcode_test1.lst");
+        File fichero = new File ("tests/" + ConvertirAHexadecimal.nombreArchivoOut);
         String cadena = "";    
         try (FileReader fr = new FileReader(fichero)) {
             
