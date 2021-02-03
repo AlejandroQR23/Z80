@@ -2,7 +2,6 @@ package Opcodes;
 
 import java.io.*;
 
-import javax.swing.*;
 
 /**
  * Clase que valida que un archivo con extensión .asm tenga código para en

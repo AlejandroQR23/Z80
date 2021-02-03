@@ -46,12 +46,28 @@ public class Opcode
             try {            
             System.out.print( "\n Intruccion: " + inst );
             String gInst = decoder.getInst( inst );                             // se obtiene la instruccion general
-            System.out.print( "\n Intruccion G: " + gInst );
+            
             String gOpc = this.instructions.get( gInst );                       // se extrae el opcode general
-            System.out.println( "\n Opcode G " + gOpc );
+            
+            if (gInst.equals("LD r, nn")) {
+                System.out.print( "\n Intruccion G: " + "LD r, n" );
+            }
+            else{
+                System.out.println("\n Intruccion G: " + gInst);
+            }
+            
             String opcode = decoder.getOpc( gOpc );                             // se obtiene el opcode final en binario
+            
+            if (gOpc.equals( "00r110\nwnn")) {
+                System.out.println("\n Opcode G " + "00r110\nwn" );
+            }
+            else{
+                System.out.println( "\n Opcode G " + gOpc );
+            }
             System.out.println( "\n Opcode " + opcode );
+            
 
+        
             opcodes.add( opcode );
             i++;
             

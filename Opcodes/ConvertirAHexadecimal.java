@@ -24,6 +24,10 @@ public class ConvertirAHexadecimal {
         String auxHexa = "";
   
         auxHexa = Integer.toString(Integer.parseInt(codigo,2),16).toUpperCase();
+
+        if (auxHexa.length() == 1) {
+            auxHexa = "0" + auxHexa; 
+        }
         return auxHexa;
     }
 
@@ -33,10 +37,33 @@ public class ConvertirAHexadecimal {
      * @return cadena en hexadecimal
      */
     static String decAHexadecimal(String codigo){
-        String auxHexa = "";
-  
-        auxHexa = Integer.toString(Integer.parseInt(codigo,10),16).toUpperCase();
+        int aux = Integer.parseInt(codigo);
 
+      
+        String auxHexa = "";
+        
+        
+        auxHexa = auxHexa + Integer.toString(Integer.parseInt(codigo,10),16).toUpperCase();
+
+
+        /*if (aux >= 256 && aux <= 271) {
+            auxHexa = "0" + auxHexa;
+        }*/
+
+        if (auxHexa.length() == 1 || auxHexa.length() == 3) {
+            auxHexa = "0" + auxHexa;
+        }
+        
+        System.out.println("Aqui ahora es: " + auxHexa); 
+        
+        if (aux >= 256 && aux <= 65535) {
+            String dividir1 = auxHexa.substring(0,2);
+            String dividir2 = auxHexa.substring(2,4);
+
+            auxHexa = dividir2 + dividir1;
+        }
+    
+        
         return auxHexa;
     }
 
@@ -50,27 +77,36 @@ public class ConvertirAHexadecimal {
      */
     public static void formatear(LinkedList<String> dataIn){
         //Crea archivo de salida .lst
-        File file = crearArchivo();
+        File file = crearArchivo(Interfaz.nombreArchivoIn);
 
         //System.out.println( dataIn);
         for (String string : dataIn) {
             
             String codigo = string;
             String valor = "";
-            String[] cadenaDividida;
+            String[] cadenaDividida = {};
             String dataFinal= "";
             String yaEnHexa = "";
 
-            if (string.contains("w")) {
-                cadenaDividida = string.split("\nw");
+            if (string.contains("\nw")) {
+                cadenaDividida = string.split("\nw");   
                 codigo = cadenaDividida[0];
                 valor = cadenaDividida[1];
-
+                System.out.println("Que valor es: " + valor);
+                valor = decAHexadecimal(valor);
+            }
+            else if(string.contains("w")){
+                cadenaDividida = string.split("w");
+                codigo = cadenaDividida[0];
+                valor = cadenaDividida[1];
+                System.out.println("Que valor es: " + valor);
                 valor = decAHexadecimal(valor);
             }
             else{
                 valor = "////";
             }
+            
+           
             
             if (!string.contains("\n")) {
                
@@ -101,13 +137,13 @@ public class ConvertirAHexadecimal {
     }
 
     /**
-     * Crea archivo .lst 
-     * que contiene la salida del ensamblador
+     * Crea archivo .ls
+     * que contiene el código en hexadecimal
      */
-    static File crearArchivo(){
+    static File crearArchivo(String nameArchivoIn){
         //direccion donde se guardan los archivos
         String address ="../tests/";   
-        String name = Interfaz.nombreArchivoIn + ".lst";
+        String name = Interfaz.nombreArchivoIn + ".lss";
         File file = new File(address + name);
         
         try {
@@ -121,9 +157,9 @@ public class ConvertirAHexadecimal {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        System.out.println("Name out: " + name);
         ConvertirAHexadecimal.nombreArchivoOut = name;
-
-        System.out.println("Name out: " +ConvertirAHexadecimal.nombreArchivoOut);
 
         return file;
     }
