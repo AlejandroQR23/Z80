@@ -20,7 +20,7 @@ import Files.*;
 public class Interfaz extends JFrame {
    
     JPanel contentPane;
-    public static String nombreArchivoIn = "";
+    public static String nombreArchivoIn = "SUMA";
 
     public Interfaz() {
 
@@ -90,7 +90,7 @@ public class Interfaz extends JFrame {
      */
     private JLabel verJLabel3() {
         JLabel ejemplo = new JLabel();
-        ejemplo.setText("Estructura y Programación de Computadoras");
+        ejemplo.setText("Estructura y Programacion de Computadoras");
         ejemplo.setBounds(200, 75, 700, 200);
         ejemplo.setFont(new Font("SANS_SERIF", 0, 18));
 
@@ -120,7 +120,7 @@ public class Interfaz extends JFrame {
         JTextArea textArea = new JTextArea();
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setBounds(130, 330, 550, 200);
+        textArea.setBounds(130, 310, 550, 230);
         textArea.setEditable(false);
 
         return textArea;
@@ -131,7 +131,7 @@ public class Interfaz extends JFrame {
      */
     private JScrollPane verScroll(JTextArea textArea) {
         JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setBounds(130, 330, 550, 200);
+        scroll.setBounds(130, 310, 550, 230);
         return scroll;
     }
 
@@ -147,7 +147,7 @@ public class Interfaz extends JFrame {
     private void escogerArchivo(JButton btnTraducir, JTextArea textArea) {
 
         JButton boton = new JButton("Seleccionar archivo");
-        boton.setBounds(290, 300, 200, 20);
+        boton.setBounds(290, 280, 200, 20);
         boton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
@@ -215,6 +215,7 @@ public class Interfaz extends JFrame {
                 ConvertirAHexadecimal.formatear(opcodes);
 
                 //Imprimir en textArea
+                CrearArchivoFinal.init();
                 String data = verArchivo();
                 textArea.setText(data);
                 boton.setVisible(false);
@@ -230,7 +231,7 @@ public class Interfaz extends JFrame {
      */
     private String verArchivo(){
         //Direccion del archivo ensamblado
-        File fichero = new File ("../tests/" + ConvertirAHexadecimal.nombreArchivoOut);
+        File fichero = new File ("../tests/" + Interfaz.nombreArchivoIn + ".lst");
         String cadena = "";    
         try (FileReader fr = new FileReader(fichero)) {
             
