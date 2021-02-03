@@ -20,7 +20,7 @@ public class FileOptions
 
     public FileOptions( String fileName ){
         this.fileInst = this.address + fileName + ".asm";
-        this.fileOpc = this.address + "opcode_" + fileName + ".lst";
+        this.fileOpc = this.address + "opcode_" + fileName;
     }
 
     /**
@@ -37,7 +37,8 @@ public class FileOptions
             LinkedList<String> fileList = new LinkedList<>();
 
             String line;
-            while( (line = br.readLine()) != null && (line = br.readLine()) != "" ){
+            while( (line = br.readLine()) != null ){
+                //&& (line = br.readLine()) != "" 
                 fileList.add( line );
             }
 
@@ -85,6 +86,8 @@ public class FileOptions
             if( !file.exists() ){
                 file.createNewFile();
             } else {
+                file.delete();
+                file.createNewFile();
                 System.out.println( "\n El archivo ya existe " );
             }
 
